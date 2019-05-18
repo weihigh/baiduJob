@@ -120,6 +120,7 @@
 
             });
             $(".iconfont i").click(function(){
+                //这段代码是检测箭头朝向，并做出相应修改，可以理解为classtoggle，其实也可以换一种思路，就是默认箭头超上，然后标签被点击时，检测i标签是否有箭头向下的类，没有的话就下一个箭头向下的类，有的话就删除箭头向下的类，这个就称之为toggleclass。
                 console.log($(this).attr("class"));
                 if ($(this).attr("class") == "icon-jiantou-shang") {
                     $(this).removeClass("icon-jiantou-shang").addClass("icon-jiantou-xia");
