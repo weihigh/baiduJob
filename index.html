@@ -5,8 +5,119 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Document</title>
+    <link rel="stylesheet" href="reset.css">
+    <link rel="stylesheet" href="style.css">
+    <script src="jquery-1.12.4.min.js"></script>
+    <script src="underscore.js"></script>
 </head>
 <body>
-    
+    <div class="navbar">
+    </div>
+    <div class="banner">
+        <img src="./banner.png" alt="">
+    </div>
+    <div class="menu">
+        <div class="job-menu center">
+            <div class="arrow-titles">
+                <ul>
+                    <li>北京市</li>
+                    <li>技术</li>
+                    <li>产品</li>
+                    <li>客户服务</li>
+                    <li>市场及销售</li>
+                    <li>管理支持</li>
+                    <li>用户体验</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+    <div class="content-wrap">
+        <div class="content center">
+            <h2>职位信息</h2>
+            <div class="search-result" id="search-result">
+                <div class="result-header">
+                    <span class="col-1">职位名称</span>
+                    <span class="col-2">职位类别</span>
+                    <span class="col-3">工作地点</span>
+                    <span class="col-4">招聘人数</span>
+                    <span class="col-5">更新时间</span>
+                </div>
+                <div class="result-item">
+                    <div class="job-titles">
+                        <span class="col-1"><a href="#">百度APP技术平台部_前端研发工程师阿萨德；开会更健康；两方都景观绿化过分了；</a></span>
+                        <span class="col-2">技术</span>
+                        <span class="col-3">北京市</span>
+                        <span class="col-4">若干</span>
+                        <span class="col-5">2019-05-15</span>
+                        <i class="sanjiao">△</i>
+                    </div>
+                    <div class="job-details">
+                        <div class="job-duty">
+                            <h3>工作职责：</h3>
+                            <p>-负责百度App小程序开发者中心的设计和开发</p>
+                            <p>-负责百度App B端组件的设计和开发</p>
+                            <p>-负责百度搜索资源平台的设计和开发</p>
+                            <p>-负责前端技术调研及应用、参与前端技术规划</p>
+                        </div>
+                        <div class="job-demand">
+                            <h3>职位要求：</h3>
+                            <p>-计算机或相关专业毕业，2年以上工作经验</p>
+                            <p>-熟悉HTML、CSS、JavaScript、Ajax等，熟悉W3C标准，对交互体验/Web语义化/浏览器兼容问题等有较好的理解</p>
+                            <p>-对前端工程化与模块化开发有一定了解，并有实践经验（如Vue/React/webpack等)</p>
+                            <p>-至少熟悉一门非前端的语言（如NodeJS/Java/PHP/C/C++/Python/Ruby），并有一定的实践经验 </p>
+                            <p>-对前端技术有持续的热情，较强的沟通和团队协作能力</p>
+                            <p>-有B端组件开发经验的优先考虑</p>
+                        </div>
+                        <div class="job-operation">
+                            <a href="#" class="apply-job">申请职位</a>
+                            <a href="#" class="collect-job">收藏职位</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script type="text/template" id="template">
+        <div class="result-item">
+                <div class="job-titles">
+                    <span class="col-1"><a href="https://talent.baidu.com/external/baidu/index.html#/jobDetail/2/<%=postId%>"><%=name%></a></span>
+                    <span class="col-2"><%=postType%></span>
+                    <span class="col-3"><%=workPlace%></span>
+                    <span class="col-4"><%=recruitNum%></span>
+                    <span class="col-5"><%=publishDate%></span>
+                    <i class="sanjiao">△</i>
+                </div>
+                <div class="job-details">
+                    <div class="job-duty">
+                        <h3>工作职责：</h3>
+                        <p>
+                            <%=serviceCondition%>
+                        </p>
+                    </div>
+                    <div class="job-demand">
+                        <h3>职位要求：</h3>
+                        <p><%=workContent%></p>
+                    </div>
+                    <div class="job-operation">
+                        <a href="#" class="apply-job">申请职位</a>
+                        <a href="#" class="collect-job">收藏职位</a>
+                    </div>
+                </div>
+            </div>
+    </script>
+    <script>
+        $.get("data/getPostList1",function(data){
+            data = JSON.parse(data);
+            var $templateStr = $("#template").html();
+            var compiled = _.template($templateStr);
+            _.each(data.postList,function(ele){
+                var domStr = compiled(ele);
+                $("#search-result").append($(domStr));
+            });
+            $(".sanjiao").click(function(){
+                $(this).parent().siblings().slideToggle();
+            });
+        })
+    </script>
 </body>
 </html>
