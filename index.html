@@ -2,11 +2,12 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Document</title>
-    <link rel="stylesheet" href="reset.css">
-    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="./css/reset.css">
+    <link rel="stylesheet" href="./css/style.css">
+    <link rel="stylesheet" href="./css/iconfont.css">
     <script src="jquery-1.12.4.min.js"></script>
     <script src="underscore.js"></script>
 </head>
@@ -85,7 +86,10 @@
                     <span class="col-3"><%=workPlace%></span>
                     <span class="col-4"><%=recruitNum%></span>
                     <span class="col-5"><%=publishDate%></span>
-                    <i class="sanjiao">△</i>
+                    <b class="iconfont">
+                        <i class="icon-jiantou-shang"></i>
+                    </b>
+
                 </div>
                 <div class="job-details">
                     <div class="job-duty">
@@ -106,21 +110,24 @@
             </div>
     </script>
     <script>
-        console.log("sdgsdhgf");
         $.get("data/getPostList1",function(data){
             data = JSON.parse(data);
-            console.log(data);
             var $templateStr = $("#template").html();
             var compiled = _.template($templateStr);
-            console.log(data.postList);
             _.each(data.postList,function(ele){
                 var domStr = compiled(ele);
-                console.log(domStr);
                 $("#search-result").append($(domStr));
 
             });
-            $(".sanjiao").click(function(){
-                $(this).parent().siblings().slideToggle();
+            $(".iconfont i").click(function(){
+                console.log($(this).attr("class"));
+                if ($(this).attr("class") == "icon-jiantou-shang") {
+                    $(this).removeClass("icon-jiantou-shang").addClass("icon-jiantou-xia");
+                }else{
+                    $(this).removeClass("icon-jiantou-xia").addClass("icon-jiantou-shang");
+                }
+                $(this).parent().parent().siblings().slideToggle(function(){
+                });
             });
         })
     </script>
