@@ -106,13 +106,18 @@
             </div>
     </script>
     <script>
+        console.log("sdgsdhgf");
         $.get("data/getPostList1",function(data){
             data = JSON.parse(data);
+            console.log(data);
             var $templateStr = $("#template").html();
             var compiled = _.template($templateStr);
+            console.log(data.postList);
             _.each(data.postList,function(ele){
                 var domStr = compiled(ele);
+                console.log(domStr);
                 $("#search-result").append($(domStr));
+
             });
             $(".sanjiao").click(function(){
                 $(this).parent().siblings().slideToggle();
