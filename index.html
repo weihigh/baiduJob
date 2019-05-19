@@ -76,6 +76,13 @@
                     </div>
                 </div>
             </div>
+            <div class="page-num" id="page-num">
+                <!-- <span class="cur"><a href="#">1</a></span>
+                <span><a href="#">2</a></span>
+                <span><a href="#">3</a></span>
+                <span><a href="#">4</a></span>
+                <span><a href="#">5</a></span> -->
+            </div>
         </div>
     </div>
     <script type="text/template" id="template">
@@ -110,30 +117,62 @@
             </div>
     </script>
     <script>
-        $.get("data/getPostList1",function(data){
-            data = JSON.parse(data);
-            var $templateStr = $("#template").html();
-            var compiled = _.template($templateStr);
-            _.each(data.postList,function(ele){
-                var domStr = compiled(ele);
-                $("#search-result").append($(domStr));
+        var current_page = 1;
 
-            });
-            $(".iconfont i").click(function(){
-                //这段代码是检测箭头朝向，并做出相应修改，可以理解为classtoggle，其实也可以换一种思路，就是默认箭头超上，然后标签被点击时，检测i标签是否有箭头向下的类，没有的话就下一个箭头向下的类，有的话就删除箭头向下的类，这个就称之为toggleclass。
-                console.log($(this).attr("class"));
-                console.log($(this).is(".icon-jiantou-shang"));//可以用is方法来检测是否存在这个类，然后用removeclass删除，用addClass添加就好！这个方法最简单！
-                if ($(this).attr("class") == "icon-jiantou-shang") {
-                    $(this).removeClass("icon-jiantou-shang").addClass("icon-jiantou-xia");
-                }else{
-                    $(this).removeClass("icon-jiantou-xia").addClass("icon-jiantou-shang");
-                }
-                
+        getDate(current_page);
 
-                $(this).parent().parent().siblings().slideToggle(function(){
+
+        function getDate(page_num){
+            $(".result-item").remove();
+            $.get("data/getPostList"+page_num,function(data){
+                data = JSON.parse(data);
+                var $templateStr = $("#template").html();
+                var compiled = _.template($templateStr);
+                _.each(data.postList,function(ele){
+                    var domStr = compiled(ele);
+                    $("#search-result").append($(domStr));
+
                 });
-            });
-        })
+
+                //首先根据获取的json数据data渲染page部分
+                console.log(data.totalPage);
+                //首先清空page——num
+                $("#page-num span").remove();
+                for (let index = 1; index <= data.totalPage ; index++) {
+                    var domStr = "<span><a href='javascript:;'>"+index+"</a></span>"
+                    $("#page-num").append($(domStr));
+                }
+
+                //让当前页面的page数字高亮
+
+                $("#page-num span").eq(page_num-1).addClass("cur");
+                 //用js代码是的整个任意宽度page_num div都可以居中
+                 console.log($("#page-num").width());
+                 var page_num_width = $("#page-num").width()-6;
+                 console.log(page_num_width);
+                 $("#page-num").css("margin-left",-page_num_width/2+"px");
+
+                //给每一个page按钮添加点击事件，当点击时，发送ajax请求
+                $("#page-num span").click(function(){
+                    var page = $(this).index() + 1;
+                    getDate(page);
+                });
+
+
+                $(".iconfont i").click(function(){
+                    //这段代码是检测箭头朝向，并做出相应修改，可以理解为classtoggle，其实也可以换一种思路，就是默认箭头超上，然后标签被点击时，检测i标签是否有箭头向下的类，没有的话就下一个箭头向下的类，有的话就删除箭头向下的类，这个就称之为toggleclass。
+                    // console.log($(this).attr("class"));
+                    // console.log($(this).is(".icon-jiantou-shang"));//可以用is方法来检测是否存在这个类，然后用removeclass删除，用addClass添加就好！这个方法最简单！
+                    if ($(this).attr("class") == "icon-jiantou-shang") {
+                        $(this).removeClass("icon-jiantou-shang").addClass("icon-jiantou-xia");
+                    }else{
+                        $(this).removeClass("icon-jiantou-xia").addClass("icon-jiantou-shang");
+                    }
+                    
+                    $(this).parent().parent().siblings().slideToggle();
+                });
+            })
+        }
     </script>
 </body>
 </html>
